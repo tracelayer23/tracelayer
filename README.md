@@ -1,8 +1,8 @@
 # TraceLayer
 
-**TraceLayer** is a claim-safe onchain intelligence layer for Account Abstraction, stablecoin activity, and AI-agent-ready data workflows.
+**TraceLayer** is a claim-safe onchain intelligence layer for Account Abstraction, asset activity, and AI-agent-ready data workflows.
 
-TraceLayer converts raw onchain activity into structured, reusable, evidence-backed intelligence for dashboards, reports, developer tools, automation workflows, and AI agents.
+TraceLayer converts raw onchain activity into structured, reusable, evidence-backed intelligence for dashboards, reports, developer tools, automation workflows, and AI systems.
 
 <p align="center">
   <img src="assets/images/tracelayer-workflow.png" alt="TraceLayer Workflow" width="100%" />
@@ -17,18 +17,18 @@ It focuses on:
 * Account Abstraction wallet intelligence
 * UserOperation evidence
 * Factory, bundler, paymaster, and EntryPoint context
-* Stablecoin and token movement interpretation
+* Token, asset, and native token movement interpretation
 * Entity profiles and relationship graphs
 * Claim-safe reporting
 * AI-agent-ready context design
 
-TraceLayer is not only a dashboard or PDF report generator. It is designed as a reusable intelligence layer that can serve humans, developer tools, automation workflows, and AI agents.
+TraceLayer is not only a dashboard or PDF report generator. It is designed as a reusable intelligence layer that can serve humans, developer tools, automation workflows, and AI systems.
 
 ## Why TraceLayer Exists
 
 Raw Account Abstraction data is difficult to interpret.
 
-Wallet activity, UserOperations, paymasters, bundlers, factories, EntryPoint interactions, stablecoin movement, and agent-related signals are often fragmented across explorers, logs, indexers, and protocol-specific sources.
+Wallet activity, UserOperations, paymasters, bundlers, factories, EntryPoint interactions, asset movement, native token usage, and application-specific signals are often fragmented across explorers, logs, indexers, and protocol-specific sources.
 
 This makes it easy for dashboards, reports, or AI systems to overclaim unsupported activity.
 
@@ -38,7 +38,7 @@ TraceLayer solves this by separating:
 * not-confirmed claims
 * evidence references
 * relationship context
-* network-level capabilities
+* environment-level capabilities
 * wallet-specific behavior
 * claim-safe guardrails
 
@@ -47,19 +47,19 @@ TraceLayer solves this by separating:
 TraceLayer follows an evidence-first rule:
 
 ```txt
-Network capability is not wallet-specific evidence.
+Environment capability is not wallet-specific evidence.
 ```
 
 Examples:
 
 ```txt
-USDC as a gas token does not prove sponsored gas.
+Native token usage does not fully explain the execution path.
 
-App or network support for bridge/swap/send does not prove a wallet used those actions.
+Application support for a feature does not prove a wallet used that feature.
 
-A token transfer does not prove merchant or ecommerce payment.
+An asset transfer does not prove payment intent or application intent.
 
-AI-agent support does not prove a wallet is a registered agent.
+Agent-ready context does not prove autonomous wallet control.
 
 Wallet-specific claims require TraceLayer evidence references.
 ```
@@ -113,7 +113,7 @@ TraceLayer currently supports:
 * Evidence references
 * Confidence and claim policy
 * Claim-safe guardrails
-* Network context separation
+* Environment context separation
 * Agent-ready context structure
 
 ## Claim-Safe Output
@@ -139,14 +139,15 @@ The system should not allow this claim until supporting evidence exists.
 
 Examples of blocked claims without evidence:
 
-* merchant payment
-* ecommerce checkout attribution
-* gas sponsorship
+* payment attribution
+* application intent
+* sponsored execution
 * paymaster usage
 * bundler usage
 * bridge usage
 * swap usage
 * protocol-specific app usage
+* automated workflow control
 
 ## Documentation
 
@@ -179,7 +180,7 @@ TraceLayer is being developed in stages:
 
 ## Product Direction
 
-TraceLayer turns raw Account Abstraction and stablecoin activity into AI-readable, claim-safe intelligence context.
+TraceLayer turns raw Account Abstraction activity, asset movement, native token usage, and application-specific interactions into AI-readable, claim-safe intelligence context.
 
 The goal is simple:
 
