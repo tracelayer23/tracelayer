@@ -174,7 +174,7 @@ Examples of blocked claims without evidence:
 * bundler usage
 * bridge usage
 * swap usage
-* App Kit usage
+* protocol-specific app usage
 
 ## Proof Status
 
@@ -240,7 +240,8 @@ No unsupported claims.
 
 ## Status
 
-TraceLayer is currently in active development and private-beta preparation.
-The project is focused on building reliable infrastructure for onchain intelligence, evidence-backed reporting, and AI-agent-readable context.
-> Status: Active development / private beta preparation. TraceLayer is currently focused on Account Abstraction intelligence, evidence-backed reporting, and AI-agent-readable context APIs.
+> Status: Active development / private beta preparation.
+
+TraceLayer is currently focused on Account Abstraction intelligence, evidence-backed reporting, claim-safe outputs, and AI-agent-readable context APIs.
+
 
