@@ -10,11 +10,11 @@ TraceLayer focuses on a different question:
 What can safely be claimed from the available evidence?
 ```
 
-This matters because raw onchain activity does not always explain intent, context, relationships, or business meaning.
+This matters because raw onchain activity does not always explain intent, context, relationships, or application meaning.
 
 ## Explorers Show Data, But Not Interpretation
 
-Block explorers are good for checking transactions, logs, contracts, and token transfers.
+Block explorers are good for checking transactions, logs, contracts, and asset movement.
 
 They can answer questions like:
 
@@ -22,20 +22,21 @@ They can answer questions like:
 Was this transaction included?
 Which address called a contract?
 Which logs were emitted?
-Which token moved?
+Which asset moved?
+Which contract was involved?
 ```
 
 But explorers usually do not explain whether a higher-level claim is safe.
 
-For example, an explorer may show a token transfer, but it does not automatically prove:
+For example, an explorer may show an asset transfer, but it does not automatically prove:
 
 ```txt
-merchant payment
-ecommerce checkout
+payment intent
+application-specific flow
 gas sponsorship
 bridge usage
 swap intent
-AI-agent activity
+automated workflow behavior
 ```
 
 The raw data is visible, but the interpretation is still left to the user.
@@ -50,8 +51,8 @@ A dashboard might show a label like:
 Payment
 Swap
 Bridge
-Sponsored Gas
-AI Agent
+Sponsored Execution
+Automated Activity
 ```
 
 However, if the label is not tied to specific evidence, it can become misleading.
@@ -70,9 +71,9 @@ TraceLayer is designed to keep those boundaries visible.
 
 ## Raw APIs Are Not Enough
 
-APIs can provide transaction data, logs, balances, token transfers, and contract metadata.
+APIs can provide transaction data, logs, balances, asset transfers, and contract metadata.
 
-But raw APIs often return low-level data without business or claim context.
+But raw APIs often return low-level data without interpretation or claim context.
 
 For example, an API may return:
 
@@ -80,7 +81,7 @@ For example, an API may return:
 from
 to
 value
-token
+asset
 contract
 event
 transaction hash
@@ -90,11 +91,11 @@ That is useful, but it does not safely answer:
 
 ```txt
 Was this a user action?
-Was this a protocol action?
-Was this a paymaster action?
-Was this a merchant payment?
-Was this wallet using an application flow?
-Was this evidence strong enough for a report or AI agent?
+Was this an application action?
+Was this infrastructure-assisted execution?
+Was this a payment flow?
+Was this wallet using a specific application flow?
+Was this evidence strong enough for a report or AI system?
 ```
 
 A raw API gives data access.
@@ -105,26 +106,26 @@ TraceLayer adds evidence-aware interpretation.
 
 Labels are helpful, but labels alone are not enough.
 
-A contract may be labeled as a router, paymaster, factory, bridge, vault, or token contract.
+A contract may be labeled as a router, paymaster, factory, bridge-like contract, vault, or token contract.
 
 But a wallet-specific claim still requires wallet-specific evidence.
 
 For example:
 
 ```txt
-A known paymaster contract exists.
+A known infrastructure contract exists.
 ```
 
 does not automatically mean:
 
 ```txt
-This wallet used sponsored gas.
+This wallet used that infrastructure in a specific way.
 ```
 
 And:
 
 ```txt
-A known bridge contract exists.
+A known bridge-like contract exists.
 ```
 
 does not automatically mean:
@@ -133,7 +134,7 @@ does not automatically mean:
 This wallet bridged assets.
 ```
 
-TraceLayer separates network-level capability from wallet-specific activity.
+TraceLayer separates environment-level capability from wallet-specific activity.
 
 ## AI Systems Need Guardrails
 
@@ -144,10 +145,10 @@ This is especially risky when raw onchain data is passed directly into an AI mod
 An AI system may generate statements like:
 
 ```txt
-This wallet paid a merchant.
-This wallet used sponsored gas.
+This wallet completed a payment.
+This wallet used sponsored execution.
 This wallet interacted with a bridge.
-This wallet acted as an AI agent.
+This wallet acted through an automated workflow.
 ```
 
 Those claims may sound useful, but they are unsafe unless supported by evidence.
@@ -165,21 +166,21 @@ The goal is not only to make AI outputs more useful, but to make them safer.
 
 ## Reports Need Evidence, Not Assumptions
 
-Business reports are different from raw dashboards.
+Reports are different from raw dashboards.
 
 A report should not only show activity. It should explain what the activity means without overstating it.
 
 For example, a weak report might say:
 
 ```txt
-This wallet completed an ecommerce payment.
+This wallet completed a payment flow.
 ```
 
 A claim-safe report should say:
 
 ```txt
-A stablecoin transfer was observed.
-Merchant or ecommerce attribution is not confirmed.
+An asset transfer was observed.
+Payment attribution or application intent is not confirmed.
 ```
 
 The second version is less flashy, but it is more trustworthy.
@@ -203,7 +204,7 @@ A dashboard may have one interpretation.
 
 A report may use another.
 
-An AI agent may receive incomplete context.
+An AI system may receive incomplete context.
 
 An API may expose raw data but not claim policy.
 
@@ -216,11 +217,11 @@ One of the biggest problems in onchain interpretation is confusing capability wi
 For example:
 
 ```txt
-A network may support stablecoin gas.
-A wallet may hold a stablecoin.
+An environment may support a specific execution model.
+A wallet may hold or move assets.
 A protocol may support swaps.
-A contract may be a paymaster.
-A system may support AI-agent flows.
+A contract may support infrastructure-assisted execution.
+A system may support automation-ready workflows.
 ```
 
 But none of those facts alone prove what a specific wallet did.
@@ -228,10 +229,10 @@ But none of those facts alone prove what a specific wallet did.
 TraceLayer treats this distinction as a core rule:
 
 ```txt
-Network capability is not wallet-specific evidence.
+Environment capability is not wallet-specific evidence.
 ```
 
-This rule prevents unsupported conclusions from being shown in dashboards, reports, APIs, and AI-agent context.
+This rule prevents unsupported conclusions from being shown in dashboards, reports, APIs, and AI-agent-ready context.
 
 ## Why TraceLayer Is Different
 
@@ -281,3 +282,4 @@ TraceLayer asks:
 ```txt
 What can safely be claimed from the evidence?
 ```
+
