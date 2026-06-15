@@ -2,7 +2,7 @@
 
 TraceLayer solves the gap between raw onchain data and safe interpretation.
 
-Instead of only showing transactions, TraceLayer turns raw Account Abstraction and stablecoin activity into structured, reusable, evidence-backed intelligence.
+Instead of only showing transactions, TraceLayer turns raw Account Abstraction activity, token movement, native token usage, and application-specific interactions into structured, reusable, evidence-backed intelligence.
 
 The goal is simple:
 
@@ -38,26 +38,28 @@ This makes the same collected evidence reusable across many different surfaces.
 
 TraceLayer starts from evidence.
 
-It does not assume that an activity happened just because a network, protocol, or app supports it.
+It does not assume that an activity happened just because an environment, protocol, contract, or application supports it.
 
 For example:
 
 ```txt
-A network may support sponsored gas.
+An environment may support sponsored execution.
 A wallet may interact with a smart account.
-A paymaster contract may exist.
-A token transfer may be visible.
-A router contract may be known.
+An infrastructure contract may exist.
+An asset transfer may be visible.
+A routing contract may be known.
+A native token may be used in execution.
 ```
 
 But those facts alone do not prove:
 
 ```txt
-This wallet used sponsored gas.
-This wallet completed a payment.
+This wallet used sponsored execution.
+This wallet completed a payment flow.
 This wallet performed a swap.
 This wallet used a bridge.
-This wallet acted as an AI agent.
+This wallet followed a specific application flow.
+This wallet acted through an automated workflow.
 ```
 
 TraceLayer keeps the difference clear.
@@ -115,23 +117,42 @@ TraceLayer helps interpret Account Abstraction activity by organizing signals su
 
 This makes Account Abstraction activity easier to understand without hiding uncertainty.
 
-## Stablecoin Activity Context
+## Token and Asset Activity Context
 
-Stablecoin transfers are useful signals, but they do not always explain intent.
+Token movement and native token usage are useful signals, but they do not always explain intent.
 
-TraceLayer treats stablecoin activity carefully.
+TraceLayer treats asset activity carefully.
 
-For example, a stablecoin transfer may be confirmed, but the business meaning may not be confirmed.
+For example, an asset transfer may be confirmed, but the purpose of the transfer may not be confirmed.
 
 A safe output may say:
 
 ```txt
-Stablecoin transfer observed.
-Merchant attribution is not confirmed.
-Ecommerce checkout context is not confirmed.
+Asset transfer observed.
+Payment attribution is not confirmed.
+Application intent is not confirmed.
 ```
 
-This allows reports and AI systems to use stablecoin activity without making unsupported business claims.
+This allows reports and AI systems to use asset activity without making unsupported claims about intent, payment flow, or application behavior.
+
+## Multi-Environment Context
+
+TraceLayer is designed to understand that different networks, wallets, contracts, and applications may produce different activity patterns.
+
+These differences can include:
+
+* execution models
+* asset flows
+* native token usage
+* contract standards
+* account types
+* infrastructure behavior
+* application-specific logic
+* transaction patterns
+
+TraceLayer treats these differences as context that can be compared, separated, and verified through evidence.
+
+The goal is to make TraceLayer flexible across different environments without forcing every activity into the same interpretation model.
 
 ## Entity and Relationship Context
 
@@ -146,7 +167,7 @@ Examples of useful relationships include:
 * wallet to bundler
 * wallet to paymaster
 * wallet to EntryPoint
-* wallet to token
+* wallet to asset movement
 * wallet to contract
 * wallet to action
 * contract to label
@@ -165,23 +186,23 @@ TraceLayer is designed to turn onchain intelligence into AI-readable context tha
 * not-confirmed claims
 * confidence boundaries
 * wallet-specific behavior
-* network-level context
+* environment-level context
 * claim-safe guardrails
 
 This helps AI systems generate safer summaries, workflows, and automation outputs.
 
-## Network Context vs Wallet Evidence
+## Environment Context vs Wallet Evidence
 
 A core TraceLayer rule is:
 
 ```txt
-Network capability is not wallet-specific evidence.
+Environment capability is not wallet-specific evidence.
 ```
 
 This means TraceLayer separates:
 
 ```txt
-What a network or protocol supports
+What an environment, protocol, contract, or application supports
 ```
 
 from:
@@ -202,13 +223,13 @@ For example:
 
 ```txt
 Observed:
-A stablecoin transfer was detected.
+An asset transfer was detected.
 
 Not confirmed:
-Merchant payment attribution is not confirmed.
+Payment attribution is not confirmed.
 
 Blocked:
-The system should not claim ecommerce checkout activity without supporting evidence.
+The system should not claim a specific application flow without supporting evidence.
 ```
 
 This makes reports more useful while keeping them trustworthy.
@@ -257,3 +278,4 @@ Reuse the intelligence everywhere.
 ```
 
 TraceLayer exists to make onchain intelligence more useful, more reusable, and more trustworthy.
+
