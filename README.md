@@ -5,7 +5,7 @@
 TraceLayer converts raw onchain activity into structured, reusable, evidence-backed intelligence for dashboards, reports, APIs, and AI agents.
 
 <p align="center">
-  <img src="assets/images/tracelayer-workflow.png" alt="TraceLayer Workflow" width="100%" />
+  <img src="tracelayer-workflow.png" alt="TraceLayer Workflow" width="100%" />
 </p>
 
 ## What is TraceLayer?
@@ -100,7 +100,7 @@ If this data is only used for dashboards or PDF reports, much of its value remai
 The Agent Context API turns existing TraceLayer intelligence into structured, reusable, AI-readable context.
 
 <p align="center">
-  <img src="assets/images/tracelayer-agent-data-layer.png" alt="TraceLayer AI Agent Data Layer" width="100%" />
+  <img src="tracelayer-agent-data-layer.png" alt="TraceLayer AI Agent Data Layer" width="100%" />
 </p>
 
 ## Current Capabilities
@@ -149,7 +149,7 @@ GET /v1/agents/{agentId}/evidence
 TraceLayer is designed to produce readable intelligence without overclaiming.
 
 <p align="center">
-  <img src="assets/images/tracelayer-claim-safe-output.png" alt="TraceLayer Claim Safe Output" width="100%" />
+  <img src="tracelayer-claim-safe-output.png" alt="TraceLayer Claim Safe Output" width="100%" />
 </p>
 
 TraceLayer separates:
