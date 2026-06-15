@@ -1,25 +1,25 @@
 # Agent-Ready Context
 
-TraceLayer is designed to make onchain intelligence reusable by AI agents, automation workflows, developer tools, dashboards, and reports.
+TraceLayer is designed to make onchain intelligence reusable by AI systems, automation workflows, developer tools, dashboards, and reports.
 
 Raw onchain data is often too noisy for AI systems to use safely.
 
-An AI agent should not only receive transaction hashes, logs, or token transfers. It needs structured context that explains what is confirmed, what is not confirmed, and what evidence supports each claim.
+An AI system should not only receive transaction hashes, logs, asset movement, or contract calls. It needs structured context that explains what is confirmed, what is not confirmed, and what evidence supports each claim.
 
 TraceLayer calls this agent-ready context.
 
 ## Why Agent-Ready Context Matters
 
-AI agents can summarize information quickly, but they can also produce unsupported conclusions if the input data is unclear.
+AI systems can summarize information quickly, but they can also produce unsupported conclusions if the input data is unclear.
 
 For example, if an AI system receives only raw onchain activity, it may incorrectly conclude:
 
 ```txt
-This wallet completed an ecommerce payment.
-This wallet used sponsored gas.
+This wallet completed a payment flow.
+This wallet used sponsored execution.
 This wallet performed a swap.
 This wallet used a bridge.
-This wallet acted as an AI agent.
+This wallet acted through an automated workflow.
 ```
 
 Those claims may sound useful, but they are unsafe unless the evidence supports them.
@@ -39,7 +39,7 @@ A good agent-ready context object should include:
 * not-confirmed claims
 * confidence boundaries
 * wallet-specific behavior
-* network-level context
+* environment-level context
 * relationship context
 * claim-safe guardrails
 * blocked-claim rules
@@ -54,7 +54,7 @@ Raw data may look like this:
 transaction hash
 from address
 to address
-token address
+asset or token address
 event log
 contract call
 timestamp
@@ -66,17 +66,17 @@ Agent-ready context turns this into a safer structure:
 
 ```txt
 Observed:
-A stablecoin transfer was detected.
+An asset transfer was detected.
 
 Evidence:
 Transaction hash and transfer event reference exist.
 
 Not confirmed:
-Merchant attribution is not confirmed.
-Ecommerce checkout context is not confirmed.
+Payment attribution is not confirmed.
+Application intent is not confirmed.
 
 Blocked:
-Do not claim merchant payment unless supporting evidence exists.
+Do not claim a specific payment flow unless supporting evidence exists.
 ```
 
 This makes the output more useful and more reliable.
@@ -93,10 +93,11 @@ Examples:
 
 ```txt
 A wallet address was observed.
-A token transfer was observed.
+An asset transfer was observed.
 A smart account interaction was observed.
 A UserOperation-related signal was observed.
 A contract interaction was observed.
+A native token usage signal was observed.
 ```
 
 Facts should be traceable back to evidence.
@@ -111,7 +112,7 @@ Examples of evidence references include:
 * log index
 * event name
 * contract address
-* token transfer record
+* asset transfer record
 * UserOperation event
 * receipt data
 * source adapter
@@ -128,12 +129,12 @@ A not-confirmed claim is a claim that may be possible, but is not proven by the 
 Examples:
 
 ```txt
-Merchant payment is not confirmed.
-Ecommerce checkout attribution is not confirmed.
+Payment attribution is not confirmed.
+Application intent is not confirmed.
 Bridge usage is not confirmed.
 Swap usage is not confirmed.
-Sponsored gas is not confirmed.
-AI-agent identity is not confirmed.
+Sponsored execution is not confirmed.
+Automated workflow control is not confirmed.
 ```
 
 This does not mean the activity never happened.
@@ -147,15 +148,15 @@ Guardrails define what an AI system should not say.
 For example:
 
 ```txt
-Do not claim merchant payment without merchant or checkout evidence.
+Do not claim payment flow without payment attribution evidence.
 
-Do not claim gas sponsorship without paymaster or sponsorship evidence.
+Do not claim sponsored execution without wallet-specific sponsorship evidence.
 
 Do not claim bridge usage without bridge-specific evidence.
 
 Do not claim swap usage without swap-specific evidence.
 
-Do not claim AI-agent identity without agent-specific evidence.
+Do not claim automated workflow control without supporting evidence.
 ```
 
 Guardrails help prevent overclaiming.
@@ -164,7 +165,7 @@ Guardrails help prevent overclaiming.
 
 Onchain activity is often relational.
 
-A wallet may interact with a smart account, factory, token, router, paymaster, bundler, or protocol contract.
+A wallet may interact with a smart account, factory, token contract, routing contract, infrastructure contract, application contract, or other account.
 
 Agent-ready context should include these relationships where evidence supports them.
 
@@ -172,7 +173,7 @@ Examples:
 
 ```txt
 wallet → smart account
-wallet → token transfer
+wallet → asset movement
 wallet → contract interaction
 smart account → EntryPoint
 wallet → possible action
@@ -181,25 +182,25 @@ claim → evidence reference
 
 Relationship context helps AI systems understand how activity connects together.
 
-## 6. Network Context
+## 6. Environment Context
 
-Network context describes what the network or environment may support.
+Environment context describes what the surrounding network, protocol, contract, or application may support.
 
-However, TraceLayer separates network context from wallet-specific evidence.
+However, TraceLayer separates environment context from wallet-specific evidence.
 
 The core rule is:
 
 ```txt
-Network capability is not wallet-specific evidence.
+Environment capability is not wallet-specific evidence.
 ```
 
 For example:
 
 ```txt
-A network may support stablecoin gas.
+An environment may support a specific execution model.
 A protocol may support swaps.
-An app may support sponsored transactions.
-A bridge may exist.
+An application may support sponsored execution.
+A bridge-like system may exist.
 ```
 
 But those facts do not prove that a specific wallet used those capabilities.
@@ -215,30 +216,30 @@ A simplified context output could look like this:
   "wallet": "0x...",
   "summary": {
     "accountAbstractionActivity": "observed",
-    "stablecoinTransfer": "observed",
-    "merchantPayment": "not_confirmed",
-    "gasSponsorship": "not_confirmed"
+    "assetTransfer": "observed",
+    "paymentAttribution": "not_confirmed",
+    "sponsoredExecution": "not_confirmed"
   },
   "facts": [
     {
-      "type": "stablecoin_transfer",
+      "type": "asset_transfer",
       "status": "confirmed",
       "evidenceRef": "tx:0x..."
     }
   ],
   "notConfirmed": [
     {
-      "claim": "merchant_payment",
-      "reason": "No merchant or checkout attribution evidence was found."
+      "claim": "payment_attribution",
+      "reason": "No payment attribution or application intent evidence was found."
     },
     {
-      "claim": "gas_sponsorship",
+      "claim": "sponsored_execution",
       "reason": "No wallet-specific sponsorship evidence was found."
     }
   ],
   "guardrails": [
-    "Do not claim merchant payment without merchant attribution evidence.",
-    "Do not claim sponsored gas without wallet-specific sponsorship evidence."
+    "Do not claim payment flow without attribution evidence.",
+    "Do not claim sponsored execution without wallet-specific sponsorship evidence."
   ]
 }
 ```
@@ -249,9 +250,9 @@ The important part is not the exact schema.
 
 The important part is the separation between confirmed facts, missing evidence, and blocked claims.
 
-## Why This Helps AI Agents
+## Why This Helps AI Systems
 
-AI agents need context that is:
+AI systems need context that is:
 
 * structured
 * reusable
@@ -262,7 +263,7 @@ AI agents need context that is:
 
 TraceLayer helps by giving AI systems a safer input layer.
 
-Instead of asking an AI agent to infer meaning from raw logs, TraceLayer provides interpreted context with evidence boundaries.
+Instead of asking an AI system to infer meaning from raw logs, TraceLayer provides interpreted context with evidence boundaries.
 
 ## Why This Helps Developers
 
@@ -285,13 +286,13 @@ For example:
 
 ```txt
 Confirmed:
-A stablecoin transfer was observed.
+An asset transfer was observed.
 
 Not confirmed:
-Merchant attribution is not confirmed.
+Payment attribution is not confirmed.
 
 Blocked:
-Do not describe this as ecommerce checkout activity without additional evidence.
+Do not describe this as a specific application flow without additional evidence.
 ```
 
 This makes reports useful without overstating the data.
@@ -301,20 +302,20 @@ This makes reports useful without overstating the data.
 TraceLayer makes an important distinction:
 
 ```txt
-Agent-ready context does not mean the wallet is confirmed to be an AI agent.
+Agent-ready context does not mean the wallet is confirmed to be controlled by an autonomous agent.
 ```
 
 Agent-ready means the data is structured so that AI systems can consume it safely.
 
-It does not automatically prove that a wallet is controlled by an AI agent, registered as an agent, or acting autonomously.
+It does not automatically prove that a wallet is controlled by automation, registered as an agent, or acting autonomously.
 
-Wallet-specific agent claims still require evidence.
+Wallet-specific automation or agent-control claims still require evidence.
 
 ## Summary
 
 Agent-ready context is one of the main reasons TraceLayer exists.
 
-TraceLayer turns raw Account Abstraction and stablecoin activity into structured context that can be reused safely by:
+TraceLayer turns raw Account Abstraction activity, asset movement, native token usage, and application-specific interactions into structured context that can be reused safely by:
 
 * AI systems
 * automation workflows
