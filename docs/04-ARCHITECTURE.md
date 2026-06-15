@@ -45,15 +45,16 @@ This can include:
 * transactions
 * receipts
 * logs
-* token transfers
+* asset movement
+* native token usage
 * contract interactions
 * Account Abstraction activity
 * UserOperation events
 * EntryPoint interactions
 * smart account activity
 * factory-created accounts
-* bundler-related activity
-* paymaster-related activity
+* infrastructure-related activity
+* application-specific interactions
 
 Raw data is useful, but it is not enough by itself.
 
@@ -74,13 +75,14 @@ The scanner looks for patterns such as:
 * UserOperation-related activity
 * contract targets
 * token movement
-* stablecoin transfers
+* asset movement
+* native token usage
 * infrastructure interactions
-* possible protocol relationships
+* possible application relationships
 
 The scanner should not overclaim.
 
-At this stage, TraceLayer is collecting signals, not making final business conclusions.
+At this stage, TraceLayer is collecting signals, not making final conclusions.
 
 ## 3. Evidence Layer
 
@@ -103,7 +105,7 @@ It should also preserve why the system reached that interpretation.
 
 Raw activity often involves many entities.
 
-For Account Abstraction and stablecoin workflows, relevant entities may include:
+Relevant entities may include:
 
 * wallet
 * smart account
@@ -112,12 +114,12 @@ For Account Abstraction and stablecoin workflows, relevant entities may include:
 * paymaster
 * EntryPoint
 * token contract
-* router
-* bridge-like contract
-* protocol contract
+* native asset
+* routing contract
+* infrastructure contract
 * application contract
-* recipient address
 * sender address
+* recipient address
 
 TraceLayer maps relationships between these entities.
 
@@ -125,11 +127,10 @@ Examples:
 
 ```txt
 wallet → smart account
-wallet → token transfer
+wallet → asset movement
 wallet → contract interaction
 smart account → EntryPoint
-UserOperation → bundler context
-UserOperation → paymaster context
+UserOperation → infrastructure context
 wallet → action label
 claim → evidence reference
 ```
@@ -142,15 +143,15 @@ The action interpretation layer turns low-level signals into safer human-readabl
 
 Examples of possible action interpretations include:
 
-* stablecoin transfer observed
+* asset movement observed
+* native token usage observed
 * smart account activity observed
 * UserOperation-related activity observed
 * contract interaction observed
-* token movement observed
 * possible swap-related activity
 * possible bridge-related activity
-* paymaster-related signal observed
-* bundler-related signal observed
+* infrastructure-related signal observed
+* application-specific signal observed
 
 The key word is evidence.
 
@@ -177,7 +178,7 @@ BLOCKED_UNTIL_EVIDENCE_EXISTS
 The system should not allow this claim until supporting evidence exists.
 ```
 
-This prevents unsupported claims from leaking into dashboards, reports, APIs, and AI-agent context.
+This prevents unsupported claims from leaking into dashboards, reports, APIs, and AI-agent-readable context.
 
 ## 7. Structured Outputs
 
@@ -190,7 +191,7 @@ These outputs may be used by:
 * REST APIs
 * automation workflows
 * developer tools
-* AI-agent-ready context
+* AI-agent-readable context
 
 The same source evidence can be reused across different output formats.
 
@@ -290,27 +291,24 @@ Output Layer
 
 This makes the system easier to extend without weakening the claim-safety model.
 
-## Why This Architecture Matters
+## Multi-Environment Context
 
-A single dashboard can show useful information.
+TraceLayer is designed to understand that different networks, wallets, contracts, and applications may produce different activity patterns.
 
-A single report can explain one wallet.
+These differences can include:
 
-A raw API can expose data.
+* execution models
+* asset flows
+* native token usage
+* contract standards
+* account types
+* infrastructure behavior
+* application-specific logic
+* transaction patterns
 
-But TraceLayer is designed to do something broader:
+TraceLayer treats these differences as context that can be compared, separated, and verified through evidence.
 
-```txt
-Create reusable, evidence-backed intelligence that can safely power many outputs.
-```
-
-This architecture helps TraceLayer avoid a common problem:
-
-```txt
-Different outputs making different claims from the same data.
-```
-
-Instead, the same evidence and claim policy can be reused consistently.
+The goal is to make TraceLayer flexible across different environments without forcing every activity into the same interpretation model.
 
 ## Claim-Safe Architecture Rule
 
@@ -326,7 +324,7 @@ This applies to:
 * report summaries
 * API responses
 * automation decisions
-* AI-agent context
+* AI-readable context
 * developer tooling
 
 If evidence is not enough, the output should say so clearly.
@@ -342,9 +340,9 @@ A simplified flow may look like this:
 
 3. Evidence layer stores references to the supporting data.
 
-4. Entity layer identifies involved contracts and addresses.
+4. Entity layer identifies involved contracts, assets, and addresses.
 
-5. Relationship layer maps wallet, smart account, token, and infrastructure relationships.
+5. Relationship layer maps wallet, account, asset, and infrastructure relationships.
 
 6. Action layer interprets what appears to have happened.
 
@@ -380,3 +378,4 @@ What can safely be claimed from the evidence?
 ```
 
 That is the core purpose of the architecture.
+
