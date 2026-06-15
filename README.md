@@ -86,9 +86,8 @@ The same collected data can be reused across:
 * dashboards
 * PDF reports
 * REST APIs
-* OpenAPI workflows
-* AI-agent context
-* automation systems
+* agent-ready context APIs
+* automation workflows
 * developer tools
 
 ## AI-Agent-Ready Data Layer
@@ -116,8 +115,9 @@ TraceLayer currently supports:
 * Confidence and claim policy
 * Claim-safe guardrails
 * Agent Context API
-* Arc network context
+* Network context separation
 * ERC-8004 agent identity, reputation, validation, and evidence endpoints
+
 
 ## API Surface
 
@@ -241,5 +241,6 @@ No unsupported claims.
 ## Status
 
 TraceLayer is currently in active development and private-beta preparation.
-
 The project is focused on building reliable infrastructure for onchain intelligence, evidence-backed reporting, and AI-agent-readable context.
+> Status: Active development / private beta preparation. TraceLayer is currently focused on Account Abstraction intelligence, evidence-backed reporting, and AI-agent-readable context APIs.
+
