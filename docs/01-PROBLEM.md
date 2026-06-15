@@ -2,7 +2,7 @@
 
 Onchain activity is becoming more complex.
 
-Modern wallets are no longer only simple externally owned accounts. Account Abstraction, smart accounts, UserOperations, bundlers, paymasters, factories, EntryPoint contracts, stablecoin transfers, and application-specific contract interactions create richer behavior, but also make interpretation harder.
+Modern wallets are no longer limited to simple externally owned accounts. Account Abstraction, smart accounts, UserOperations, bundlers, paymasters, factories, EntryPoint contracts, token movement, native token usage, and application-specific contract interactions create richer behavior, but also make interpretation harder.
 
 For humans, this activity is difficult to read directly from raw explorers and logs.
 
@@ -20,18 +20,19 @@ Raw transaction data often answers questions like:
 What transaction happened?
 Which contract was called?
 Which address emitted an event?
-Which token moved?
+Which asset moved?
+Which account or contract was involved?
 ```
 
 But it does not always safely answer higher-level questions like:
 
 ```txt
-Was this a merchant payment?
+Was this a payment?
 Was this gas sponsored?
 Was this paymaster actually used?
 Was this a swap?
 Was this a bridge action?
-Was this wallet acting as an AI agent?
+Was this wallet acting through an automated workflow?
 Was this activity connected to a real application flow?
 ```
 
@@ -39,27 +40,29 @@ Those higher-level claims require evidence, context, and clear separation betwee
 
 ## Why This Matters
 
-Without claim-safe interpretation, dashboards and AI systems can easily overstate what happened.
+Without claim-safe interpretation, dashboards, reports, and AI systems can easily overstate what happened.
 
 For example:
 
 ```txt
-A stablecoin transfer does not automatically prove ecommerce activity.
+An asset transfer does not automatically prove payment intent.
 
-A network supporting sponsored gas does not prove a specific wallet used sponsored gas.
+Native token usage does not automatically explain the full execution flow.
+
+A network supporting sponsored execution does not prove a specific wallet used sponsored execution.
 
 A protocol supporting swaps does not prove a wallet performed a swap.
 
-A contract interaction does not always explain the business intent behind the action.
+A contract interaction does not always explain the business or application intent behind the action.
 
-AI-agent-related infrastructure does not prove that a wallet is a registered or active AI agent.
+Automation-ready data does not prove that a wallet is controlled by an autonomous agent.
 ```
 
 This creates a gap between raw blockchain data and reliable intelligence.
 
 ## Fragmented Data Sources
 
-Account Abstraction and stablecoin activity are often spread across many different data sources:
+Account Abstraction activity and asset movement are often spread across many different data sources:
 
 * transaction receipts
 * event logs
@@ -68,9 +71,10 @@ Account Abstraction and stablecoin activity are often spread across many differe
 * bundler activity
 * paymaster context
 * factory-created smart accounts
-* token transfer events
+* token and asset transfer events
+* native token activity
 * contract labels
-* protocol-specific metadata
+* application-specific metadata
 * explorer APIs
 * indexer outputs
 
@@ -94,24 +98,22 @@ For AI-agent-ready onchain intelligence, the system needs to provide:
 
 Without these boundaries, AI systems may sound confident while making claims that the data does not actually support.
 
-## The Business Reporting Problem
+## The Reporting Problem
 
-Businesses also need readable reports, not only raw transaction hashes.
+Readable reports are useful, but they must avoid unsupported claims.
 
-However, business-facing reports must avoid unsupported claims.
-
-For example, a report should not say:
+A report should not say:
 
 ```txt
-This wallet completed an ecommerce payment.
+This wallet completed a payment flow.
 ```
 
-unless there is evidence for merchant attribution, payment intent, or checkout context.
+unless there is enough evidence for payment intent, attribution, or application-specific context.
 
 A safer report should say:
 
 ```txt
-A stablecoin transfer was observed, but merchant or ecommerce attribution is not confirmed.
+An asset transfer was observed, but payment attribution or application intent is not confirmed.
 ```
 
 This difference matters because onchain intelligence should be useful without becoming misleading.
@@ -141,7 +143,7 @@ TraceLayer exists because raw onchain activity needs a safer intelligence layer.
 
 The goal is not only to display activity, but to explain it with evidence.
 
-TraceLayer is focused on turning complex Account Abstraction and stablecoin activity into structured intelligence that separates:
+TraceLayer is focused on turning complex Account Abstraction activity, token movement, native token usage, and application-specific interactions into structured intelligence that separates:
 
 * what is confirmed
 * what is not confirmed
@@ -158,3 +160,4 @@ Onchain data is visible, but safe interpretation is hard.
 ```
 
 TraceLayer is designed to close the gap between raw blockchain activity and reusable, evidence-backed intelligence.
+
