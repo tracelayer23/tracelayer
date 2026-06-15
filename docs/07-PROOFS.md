@@ -18,7 +18,7 @@ Action labels
 Claim-safe output
 ```
 
-TraceLayer proofs are designed to validate that labels and summaries are supported by evidence, not assumptions.
+TraceLayer proofs are designed to validate that labels, summaries, and context outputs are supported by evidence, not assumptions.
 
 ## Proof Flow
 
@@ -26,7 +26,7 @@ A simplified proof flow looks like this:
 
 ```txt
 1. Collect raw wallet activity
-2. Parse transactions, logs, transfers, and Account Abstraction signals
+2. Parse transactions, logs, transfers, native token usage, and Account Abstraction signals
 3. Extract evidence references
 4. Identify involved entities
 5. Map relationships
@@ -45,11 +45,11 @@ from: 0x...
 to: 0x...
 contract: 0x...
 event: Transfer
-token: USDC
-amount: 1.00
+asset: token_or_native_asset
+amount: ...
 ```
 
-At this stage, TraceLayer does not treat the activity as a merchant payment, swap, bridge, or sponsored transaction.
+At this stage, TraceLayer does not treat the activity as a payment flow, swap, bridge, sponsored execution, or automated workflow.
 
 It is only raw evidence.
 
@@ -60,10 +60,10 @@ TraceLayer converts the raw record into evidence references:
 ```txt
 Evidence detected:
 - transaction hash
-- token transfer event
+- event reference
 - sender address
 - recipient address
-- token contract
+- asset or token contract
 - amount
 - timestamp
 ```
@@ -72,15 +72,15 @@ Example terminal-style output:
 
 ```txt
 [scanner] wallet activity collected
-[parser] token transfer detected
+[parser] asset movement detected
 [evidence] transfer evidence reference created
 [evidence] tx hash attached
-[evidence] token contract attached
+[evidence] asset context attached
 ```
 
-This means TraceLayer can confirm that a token transfer happened.
+This means TraceLayer can confirm that asset movement happened.
 
-It does not mean TraceLayer can confirm the business purpose of the transfer.
+It does not mean TraceLayer can confirm the purpose of the activity.
 
 ## Example: Entity Context
 
@@ -89,7 +89,7 @@ TraceLayer then identifies entities involved in the activity.
 ```txt
 Entity context:
 - wallet address observed
-- token contract observed
+- asset context observed
 - recipient address observed
 - contract interaction observed
 ```
@@ -98,7 +98,7 @@ Example terminal-style output:
 
 ```txt
 [entity] wallet detected
-[entity] token contract detected
+[entity] asset context detected
 [entity] recipient detected
 [entity] contract target detected
 ```
@@ -111,7 +111,7 @@ TraceLayer maps relationships between observed entities.
 
 ```txt
 Relationships:
-wallet → token transfer
+wallet → asset movement
 wallet → recipient
 wallet → contract interaction
 claim → evidence reference
@@ -120,9 +120,9 @@ claim → evidence reference
 Example terminal-style output:
 
 ```txt
-[relationship] wallet -> token_transfer
+[relationship] wallet -> asset_movement
 [relationship] wallet -> recipient
-[relationship] token_transfer -> evidence_ref
+[relationship] asset_movement -> evidence_ref
 [relationship] claim -> evidence_ref
 ```
 
@@ -135,23 +135,23 @@ After evidence and relationships are processed, TraceLayer can generate safe lab
 Example safe labels:
 
 ```txt
-Label: Stablecoin Transfer
+Label: Asset Movement
 Status: CONFIRMED
-Evidence: token transfer event exists
+Evidence: transfer event or native asset movement exists
 ```
 
 Example terminal-style output:
 
 ```txt
-[label] stablecoin_transfer = CONFIRMED
-[label] merchant_payment = NOT_CONFIRMED
-[label] ecommerce_checkout = NOT_CONFIRMED
-[label] gas_sponsorship = NOT_CONFIRMED
+[label] asset_movement = CONFIRMED
+[label] payment_flow = NOT_CONFIRMED
+[label] application_intent = NOT_CONFIRMED
+[label] sponsored_execution = NOT_CONFIRMED
 ```
 
 This is the important part:
 
-TraceLayer can confirm the stablecoin transfer, but it should not automatically claim merchant payment or ecommerce checkout.
+TraceLayer can confirm the observed asset movement, but it should not automatically claim payment intent, application intent, or sponsored execution.
 
 ## Example: Claim-Safe Output
 
@@ -159,28 +159,28 @@ TraceLayer separates what is confirmed from what is not confirmed.
 
 ```txt
 CONFIRMED:
-- stablecoin transfer observed
+- asset movement observed
 
 NOT_CONFIRMED:
-- merchant attribution
-- ecommerce checkout context
-- gas sponsorship
+- payment attribution
+- application intent
+- sponsored execution
 
 BLOCKED_UNTIL_EVIDENCE_EXISTS:
-- merchant payment claim
-- ecommerce checkout claim
-- sponsored gas claim
+- payment flow claim
+- specific application flow claim
+- sponsored execution claim
 ```
 
 Example terminal-style output:
 
 ```txt
-[claim] stablecoin_transfer: CONFIRMED
-[claim] merchant_payment: NOT_CONFIRMED
-[claim] ecommerce_checkout: NOT_CONFIRMED
-[claim] gas_sponsorship: NOT_CONFIRMED
-[guardrail] blocked unsupported merchant payment claim
-[guardrail] blocked unsupported sponsored gas claim
+[claim] asset_movement: CONFIRMED
+[claim] payment_flow: NOT_CONFIRMED
+[claim] application_intent: NOT_CONFIRMED
+[claim] sponsored_execution: NOT_CONFIRMED
+[guardrail] blocked unsupported payment flow claim
+[guardrail] blocked unsupported sponsored execution claim
 ```
 
 ## Example: Account Abstraction Context
@@ -212,12 +212,12 @@ Safe labels may look like:
 Label: Account Abstraction Activity
 Status: CONFIRMED
 
-Label: Sponsored Gas
+Label: Sponsored Execution
 Status: NOT_CONFIRMED
 Reason: wallet-specific sponsorship evidence was not confirmed
 ```
 
-TraceLayer should not claim sponsored gas unless supporting evidence exists.
+TraceLayer should not claim sponsored execution unless supporting evidence exists.
 
 ## Example: From Raw Signal to Label
 
@@ -225,36 +225,63 @@ A simplified raw-to-label flow:
 
 ```txt
 Raw:
-Transfer event detected
+Transfer or value movement event detected
 
 Parsed:
-USDC transfer observed
+Asset movement observed
 
 Evidence:
-tx hash + token contract + sender + recipient + amount
+tx hash + asset context + sender + recipient + amount
 
 Label:
-Stablecoin Transfer
+Asset Movement
 
 Claim status:
 CONFIRMED
 
 Blocked claims:
-Merchant payment
-Ecommerce checkout
+Payment flow
+Application intent
+Sponsored execution
 ```
 
 Example terminal-style output:
 
 ```txt
-[raw] event=Transfer token=USDC amount=1.00
-[parse] stablecoin transfer detected
+[raw] event=Transfer asset=token_or_native_asset amount=...
+[parse] asset movement detected
 [evidence] tx reference created
-[label] Stablecoin Transfer
-[claim] stablecoin_transfer = CONFIRMED
-[claim] merchant_payment = NOT_CONFIRMED
-[claim] ecommerce_checkout = NOT_CONFIRMED
+[label] Asset Movement
+[claim] asset_movement = CONFIRMED
+[claim] payment_flow = NOT_CONFIRMED
+[claim] application_intent = NOT_CONFIRMED
 ```
+
+## Example: Multi-Environment Context
+
+TraceLayer proofs should also support different execution environments.
+
+Different environments may produce different patterns around:
+
+* asset movement
+* native token usage
+* account types
+* contract standards
+* execution models
+* infrastructure behavior
+* application-specific logic
+
+Example terminal-style output:
+
+```txt
+[context] execution model checked
+[context] asset movement checked
+[context] native token usage checked
+[context] infrastructure signals checked
+[context] application-specific signals checked
+```
+
+TraceLayer treats these differences as context that can be compared, separated, and verified through evidence.
 
 ## Example: Proof Command Format
 
@@ -289,7 +316,7 @@ summary:
 
 A passing proof means that the tested flow worked for the selected case.
 
-It does not mean every possible wallet, protocol, or business action is fully classified.
+It does not mean every possible wallet, protocol, environment, or application behavior is fully classified.
 
 Safe interpretation:
 
