@@ -1,6 +1,6 @@
 # TraceLayer
 
-**TraceLayer** is a claim-safe onchain intelligence layer for Account Abstraction, asset activity, and AI-agent-ready data workflows.
+****TraceLayer** makes complex onchain activity easier to understand by turning raw wallet, contract, and asset data into structured, claim-safe intelligence.
 
 TraceLayer converts raw onchain activity into structured, reusable, evidence-backed intelligence for dashboards, reports, developer tools, automation workflows, and AI systems.
 
